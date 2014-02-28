@@ -13,5 +13,7 @@
 // Declare here the properties to be used as input and output ports for the plug-in e.g.
 //@property double inputFoo;
 //@property (copy) NSString* outputBar;
+@property double inputNumber;
+@property double outputNumber;
 
 @end

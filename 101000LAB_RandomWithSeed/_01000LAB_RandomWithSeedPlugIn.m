@@ -12,12 +12,13 @@
 #import "_01000LAB_RandomWithSeedPlugIn.h"
 
 #define	kQCPlugIn_Name				@"101000LAB_RandomWithSeed"
-#define	kQCPlugIn_Description		@"101000LAB_RandomWithSeed description"
+#define	kQCPlugIn_Description		@"Random with seed"
 
 @implementation _01000LAB_RandomWithSeedPlugIn
 
 // Here you need to declare the input / output properties as dynamic as Quartz Composer will handle their implementation
 //@dynamic inputFoo, outputBar;
+@dynamic inputNumber, outputNumber;
 
 + (NSDictionary *)attributes
 {
@@ -28,6 +29,17 @@
 + (NSDictionary *)attributesForPropertyPortWithKey:(NSString *)key
 {
 	// Specify the optional attributes for property based ports (QCPortAttributeNameKey, QCPortAttributeDefaultValueKey...).
+    if([key isEqualToString:@"inputNumber"])
+        return [NSDictionary dictionaryWithObjectsAndKeys:
+                @"Seed", QCPortAttributeNameKey,
+                [NSNumber numberWithUnsignedInteger:64],  QCPortAttributeDefaultValueKey,
+                nil];
+    
+    if([key isEqualToString:@"outputNumber"])
+        return [NSDictionary dictionaryWithObjectsAndKeys:
+                @"Random", QCPortAttributeNameKey,
+                nil];
+    
 	return nil;
 }
 
@@ -81,6 +93,8 @@
 	The OpenGL context for rendering can be accessed and defined for CGL macros using:
 	CGLContextObj cgl_ctx = [context CGLContextObj];
 	*/
+    srand((unsigned)(CFAbsoluteTimeGetCurrent() * self.inputNumber));
+    self.outputNumber = (rand() * rand() % 100) * 0.01;
 	
 	return YES;
 }
